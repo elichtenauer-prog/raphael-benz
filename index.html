@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Raphael Benz - Bienne</title>
+<meta name="description" content="Raphael Benz, producteur culturel à Bienne : Asphalt, Paradice, Flair, LakeLive, Live Ch-onzerte. Des places et des parcs qui deviennent des lieux de rencontre.">
+<!-- Fait à Bienne par Klap Studio. Si tu lis ceci, passe au Paradice : la première tournée de vin chaud est pour toi. -->
+<style>
+/*
+VOICE: urbain, chaleureux, sûr de lui ; un programme d'été collé sur un mur de béton.
+IDEA: la ville s'ouvre. Un cercle de lumière sur Bienne s'agrandit jusqu'à remplir l'écran, puis chaque lieu s'allume à son tour.
+PICTURE: les vraies photos des événements, révélées par des masques qui s'ouvrent, avec des noms géants qui traversent l'écran.
+COLOUR and TYPE: béton clair, asphalte, un bleu de projecteur en accent ; Archivo, du plus étroit au plus large.
+LAYOUT: grille à 12 colonnes exposée par le texte, deux sections épinglées (l'ouverture et les films), le reste en défilement libre.
+*/
+@font-face{font-family:"Archivo";src:url(archivo.woff2) format("woff2");font-weight:100 900;font-stretch:62% 125%;font-display:swap}
+:root{color-scheme:light;--beton:#D8D5CE;--beton2:#C7C3BA;--asphalte:#1D1E20;--asph2:#2A2B2E;--gris:#6F6D68;--blanc:#F2F1EE;--bleu:#2E5BFF;--bleu2:#8FA8FF;--out:cubic-bezier(.16,1,.3,1);--back:cubic-bezier(.34,1.45,.5,1)}
+*{box-sizing:border-box;min-width:0}
+html{scroll-padding-top:72px;-webkit-text-size-adjust:100%}
+html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{margin:0;background:var(--beton);transition:background-color .9s cubic-bezier(.4,0,.2,1);color:var(--asphalte);font:400 17px/1.6 "Archivo",system-ui,sans-serif;overflow-x:clip}
+img{display:block;max-width:100%}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--bleu);outline-offset:4px;border-radius:4px}
+.wrap{padding-inline:max(5vw,18px)}
+::selection{background:var(--bleu);color:var(--blanc)}
+
+/* grain vivant, couche d'ambiance */
+.grain{position:fixed;inset:-50%;z-index:60;pointer-events:none;opacity:.06;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");animation:grain 1.2s steps(6) infinite}
+@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-4%,3%)}40%{transform:translate(3%,-2%)}60%{transform:translate(-2%,-4%)}80%{transform:translate(4%,2%)}100%{transform:translate(0,0)}}
+
+/* barre de progression */
+.progress{position:fixed;left:0;top:0;height:2px;width:100%;background:var(--bleu);transform-origin:left;transform:scaleX(0);z-index:40}
+
+/* curseur */
+.cursor{position:fixed;left:0;top:0;z-index:70;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:var(--blanc);mix-blend-mode:difference;pointer-events:none;display:none;align-items:center;justify-content:center;transition:width .45s var(--back),height .45s var(--back),margin .45s var(--back)}
+.cursor span{font-size:13px;font-weight:600;color:var(--asphalte);opacity:0;transition:opacity .2s;white-space:nowrap}
+.cursor.big{width:92px;height:92px;margin:-46px 0 0 -46px;mix-blend-mode:normal;background:var(--blanc)}
+.cursor.big span{opacity:1}
+@media (hover:hover) and (pointer:fine){.has-cursor .cursor{display:flex}}
+
+/* nav */
+.nav{position:fixed;inset:0 0 auto;z-index:50;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px max(5vw,18px);color:var(--blanc);mix-blend-mode:difference}
+.nav b{font-weight:700;font-stretch:112%;letter-spacing:-.01em}
+.nav nav{display:flex;gap:clamp(14px,2.4vw,32px);flex-wrap:wrap;font-size:15px;align-items:center}
+.nav a{text-decoration:none;position:relative;display:inline-block}
+.nav a::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform .5s var(--out)}
+.nav a:hover::after{transform:scaleX(1);transform-origin:left}
+.lang{opacity:.6}
+
+/* ouverture */
+.hero{position:relative;height:100svh;min-height:560px;overflow:hidden;background:var(--beton)}
+.hero .disc{position:absolute;inset:0;clip-path:circle(17% at 50% 52%);will-change:clip-path}
+.hero .disc img{width:100%;height:100%;object-fit:cover;transform:scale(1.25);will-change:transform}
+.hero .disc::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(29,30,32,.25),rgba(29,30,32,.1) 40%,rgba(29,30,32,.75))}
+.hero h1{position:absolute;inset:0;margin:0;display:flex;flex-direction:column;justify-content:center;z-index:2;color:var(--blanc);mix-blend-mode:difference;pointer-events:none;font-weight:800;font-stretch:125%;font-size:clamp(62px,14.5vw,270px);line-height:.84;letter-spacing:-.05em}
+.hero h1 .row{display:block;white-space:nowrap;will-change:transform}
+.hero h1 .row:first-child{text-align:left;padding-left:3vw}
+.hero h1 .row:last-child{text-align:right;padding-right:3vw}
+.hero h1 .ch{display:inline-block;will-change:transform}
+.hero .tag{position:absolute;z-index:3;left:max(5vw,18px);bottom:28px;font-size:15px;color:var(--asphalte)}
+.hero .scroll{position:absolute;z-index:3;right:max(5vw,18px);bottom:28px;font-size:15px;display:flex;align-items:center;gap:12px;color:var(--asphalte)}
+.hero .scroll i{display:block;width:1px;height:46px;background:currentColor;transform-origin:top;animation:drip 2.2s var(--out) infinite}
+@keyframes drip{0%{transform:scaleY(0)}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+.hero .lede{position:absolute;z-index:3;left:max(5vw,18px);bottom:clamp(90px,12vh,140px);max-width:34ch;font-size:clamp(18px,1.6vw,23px);line-height:1.4;color:var(--blanc);opacity:0}
+
+/* intro */
+.intro{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;padding-block:clamp(90px,12vw,180px)}
+.intro h2{grid-column:1/11;margin:0;font-weight:700;font-stretch:110%;font-size:clamp(32px,4.6vw,66px);line-height:1.04;letter-spacing:-.03em}
+.intro h2 .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.06em}
+.intro h2 .w span{display:inline-block}
+.ring{grid-column:1/5;align-self:start;position:relative;width:min(100%,330px);aspect-ratio:1;margin-top:clamp(30px,5vw,70px)}
+.ring svg{position:absolute;inset:0;width:100%;height:100%;animation:spin 28s linear infinite}
+.ring text{font:500 13.5px "Archivo",sans-serif;letter-spacing:.08em;fill:var(--asphalte)}
+.ring .core{position:absolute;inset:18%;border-radius:50%;background:var(--beton2);display:grid;place-items:center;text-align:center;font-size:14px;color:#4b4a46;padding:18px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.intro .txt{grid-column:6/13;margin-top:clamp(30px,5vw,70px);max-width:60ch}
+.intro .txt p{margin:0 0 1em}
+.facts{grid-column:1/13;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:clamp(40px,6vw,90px)}
+.facts div{font-size:15px;color:#3b3b3c;padding-top:20px;position:relative}
+.facts div::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--asphalte);transform-origin:left;transform:scaleX(var(--line,1))}
+.facts strong{display:block;font-weight:700;font-stretch:115%;font-size:clamp(22px,2.4vw,32px);line-height:1.1;color:var(--asphalte);margin-bottom:6px}
+
+/* chapitres */
+.chap{position:relative;padding-bottom:clamp(70px,9vw,150px)}
+.frame{position:relative;height:clamp(440px,88vh,960px);overflow:hidden;margin-inline:max(5vw,18px);border-radius:22px;background:var(--asph2);will-change:clip-path}
+.frame img{position:absolute;left:0;top:-14%;width:100%;height:128%;object-fit:cover;will-change:transform}
+.chap .big{position:relative;z-index:2;margin:-.56em 0 0;font-weight:800;font-stretch:125%;font-size:clamp(58px,13vw,240px);line-height:.85;letter-spacing:-.05em;white-space:nowrap;pointer-events:none;will-change:transform}
+.chap .big span{display:inline-block;padding-left:4vw}
+.meta{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;margin-top:clamp(24px,3vw,44px)}
+.meta .role{grid-column:1/5;font-size:15px}
+.meta .role span{display:block;color:var(--gris)}
+.meta .role b{display:block;font-weight:600;margin-bottom:12px}
+.meta p{grid-column:6/12;margin:0;font-size:clamp(17px,1.4vw,20px);line-height:1.5;max-width:58ch}
+.chap.r .meta .role{grid-column:9/13;grid-row:1}
+.chap.r .meta p{grid-column:2/8;grid-row:1}
+.tag2{display:block;margin-top:14px;font-size:13px;color:var(--gris)}
+
+/* nuit : le fond bascule au scroll */
+.night{color:var(--blanc);position:relative;background:var(--asphalte)}
+.motion .night{background:transparent}
+body.dark{background:var(--asphalte)}
+.night .meta .role span,.night .tag2{color:#a3a19b}
+.night .frame{background:#26272a}
+.gap{height:clamp(60px,8vw,120px)}
+
+/* autres projets */
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(24px,4vw,64px);padding-block:clamp(20px,4vw,60px) clamp(90px,10vw,160px)}
+.duo article{position:relative;padding:28px 0 0}
+.duo article::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:#4a4b4e}
+.duo article::after{content:"";position:absolute;left:0;top:0;height:1px;width:100%;background:var(--bleu);transform:scaleX(0);transform-origin:left;transition:transform .8s var(--out)}
+.duo article:hover::after{transform:scaleX(1)}
+.duo h3{margin:0 0 14px;font-weight:800;font-stretch:120%;font-size:clamp(36px,4.8vw,72px);line-height:.95;letter-spacing:-.035em;transition:transform .6s var(--back)}
+.duo article:hover h3{transform:translateX(12px)}
+.duo .role{font-size:15px;color:#a3a19b;margin-bottom:14px}
+.duo p{margin:0;max-width:52ch;color:#dcdad5}
+
+/* films, épinglés et défilés à l'horizontale */
+.films{position:relative;overflow:hidden;padding-block:clamp(70px,8vw,120px)}
+.films h2,.refs h2,.eng h2{margin:0 0 clamp(28px,4vw,56px);font-weight:800;font-stretch:120%;font-size:clamp(42px,6.5vw,104px);line-height:.92;letter-spacing:-.04em}
+.track{display:flex;gap:clamp(16px,2vw,28px);width:max-content;padding-inline:max(5vw,18px);will-change:transform}
+.film{flex:0 0 min(70vw,640px)}
+.film .scr{position:relative;aspect-ratio:16/9;border-radius:18px;overflow:hidden;background:radial-gradient(120% 90% at 30% 20%,#3a3c41 0%,var(--asph2) 55%,#161719 100%);transition:transform .7s var(--out)}
+.film:hover .scr{transform:scale(.97)}
+.film .scr i{position:absolute;left:50%;top:50%;width:76px;height:76px;margin:-38px 0 0 -38px;border-radius:50%;border:1.5px solid var(--blanc);transition:transform .6s var(--back),background .3s,border-color .3s}
+.film .scr i::before{content:"";position:absolute;left:50%;top:50%;margin:-10px 0 0 -5px;border-style:solid;border-width:10px 0 10px 16px;border-color:transparent transparent transparent var(--blanc)}
+.film:hover .scr i{transform:scale(1.18);background:var(--bleu);border-color:var(--bleu)}
+.film h3{margin:18px 0 4px;font-weight:700;font-stretch:110%;font-size:21px}
+.film p{margin:0;font-size:15px;color:#a3a19b}
+.films .hint{margin:22px max(5vw,18px) 0;font-size:14px;color:#a3a19b}
+
+/* références */
+.refs{padding-block:clamp(90px,10vw,160px) clamp(60px,8vw,120px);overflow:hidden}
+.marquee{display:flex;width:max-content;gap:0;margin-bottom:14px}
+.marquee ul{display:flex;gap:12px;list-style:none;margin:0;padding:0 12px 0 0;animation:mq 60s linear infinite}
+.marquee.rev ul{animation-direction:reverse;animation-duration:70s}
+.marquee:hover ul{animation-play-state:paused}
+.marquee li{padding:12px 22px;border-radius:999px;background:var(--beton2);font-size:16px;white-space:nowrap;transition:background .3s,color .3s}
+.marquee li:hover{background:var(--asphalte);color:var(--blanc)}
+@keyframes mq{to{transform:translateX(-100%)}}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* engagement */
+.eng{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;padding-bottom:clamp(90px,10vw,160px)}
+.eng h2{grid-column:1/7}
+.eng p{grid-column:7/13;margin:0;max-width:56ch;font-size:clamp(17px,1.4vw,20px)}
+
+/* contact */
+.contact{position:relative;min-height:100svh;overflow:hidden;color:var(--blanc);display:flex;align-items:flex-end;background:var(--asphalte)}
+.contact .ph{position:absolute;inset:-12% 0}
+.contact .ph img{width:100%;height:100%;object-fit:cover}
+.contact::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(29,30,32,.15),rgba(29,30,32,.9))}
+.contact .in{position:relative;z-index:2;width:100%;padding-block:clamp(60px,8vw,120px)}
+.contact h2{margin:0;font-weight:800;font-stretch:125%;font-size:clamp(50px,9.5vw,180px);line-height:.88;letter-spacing:-.05em;text-wrap:balance}
+.contact h2 .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.05em}
+.contact h2 .w span{display:inline-block}
+.mail{display:inline-block;margin-top:clamp(28px,3vw,44px);font-size:clamp(20px,2.2vw,30px);text-decoration:none;padding:6px 0;position:relative}
+.mail::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--bleu2);transform-origin:left;transition:transform .6s var(--out)}
+.mail:hover::after{transform:scaleX(.4)}
+footer{background:var(--asphalte);color:#a3a19b;font-size:14px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-block:26px}
+footer a{color:var(--blanc)}
+
+/* Bienne / Biel */
+.bi{position:relative;display:inline-block;cursor:default}
+.bi .de{position:absolute;left:0;top:0;opacity:0;transform:translateY(.45em) rotate(4deg);transition:opacity .35s,transform .5s var(--back)}
+.bi .fr{display:inline-block;transition:opacity .35s,transform .5s var(--back)}
+.bi:hover .fr{opacity:0;transform:translateY(-.45em) rotate(-4deg)}
+.bi:hover .de{opacity:1;transform:none}
+
+@media(max-width:860px){
+ .intro h2,.intro .txt,.ring,.eng h2,.eng p{grid-column:1/-1}
+ .ring{width:min(70vw,280px)}
+ .facts{grid-template-columns:minmax(0,1fr)}
+ .meta .role,.meta p,.chap.r .meta .role,.chap.r .meta p{grid-column:1/-1;grid-row:auto}
+ .duo{grid-template-columns:minmax(0,1fr)}
+ .frame{height:68svh}
+ .hero .lede{bottom:96px}
+ .track{overflow-x:auto;width:auto;scroll-snap-type:x mandatory;padding-bottom:12px}
+ .film{flex-basis:84vw;scroll-snap-align:start}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.hero .disc{clip-path:none}.hero .disc img{transform:none}.hero .lede{opacity:1}}
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<div class="progress" aria-hidden="true"></div>
+<div class="cursor" aria-hidden="true"><span></span></div>
+
+<header class="nav">
+ <b>Raphael Benz</b>
+ <nav aria-label="Navigation principale">
+  <a href="#projets" data-mag>Projets</a>
+  <a href="#films" data-mag>Films</a>
+  <a href="#contact" data-mag>Contact</a>
+  <span class="lang" title="Version allemande à venir">FR / DE</span>
+ </nav>
+</header>
+
+<main>
+<section class="hero" aria-label="Ouverture">
+ <div class="disc"><img src="asphalt.webp" alt="Vue aérienne d'Asphalt, l'open air musical sur l'Esplanade de Bienne, devant le Palais des Congrès" fetchpriority="high"></div>
+ <h1 aria-label="Raphael Benz"><span class="row" aria-hidden="true">Raphael</span><span class="row" aria-hidden="true">Benz</span></h1>
+ <p class="lede">Une esplanade, un parc, un bord de lac. Raphael Benz en fait des lieux où la ville se retrouve.</p>
+ <p class="tag">Producteur culturel, <span class="bi"><span class="fr">Bienne</span><span class="de" aria-hidden="true">Biel</span></span></p>
+ <p class="scroll" aria-hidden="true">Descendre <i></i></p>
+</section>
+
+<section class="intro wrap" aria-labelledby="t-intro">
+ <h2 id="t-intro" data-words>Il conçoit les événements de l'espace public, de l'idée au dernier projecteur rangé.</h2>
+ <div class="ring" aria-label="Emplacement du portrait">
+  <svg viewBox="0 0 200 200" aria-hidden="true"><defs><path id="c" d="M100,100 m-86,0 a86,86 0 1,1 172,0 a86,86 0 1,1 -172,0"/></defs><text><textPath href="#c">Raphael Benz, Bienne. Portrait en préparation. Raphael Benz, Bienne. Portrait en préparation.</textPath></text></svg>
+  <div class="core">Portrait : séance photo Klap Studio à prévoir</div>
+ </div>
+ <div class="txt" data-rise>
+  <p>Organisateur et entrepreneur culturel, Raphael Benz est basé à <span class="bi"><span class="fr">Bienne</span><span class="de" aria-hidden="true">Biel</span></span>. Avec Tina Messer, il a fondé l'agence Messer Benz, qui imagine des concepts sur mesure pour faire vivre durablement les espaces urbains.</p>
+  <p>Son métier couvre toute la chaîne : le concept, la programmation et le booking, la production, la direction sur place, et le lien entre la ville, les partenaires et le public.</p>
+ </div>
+ <div class="facts">
+  <div data-rise><strong>Conception et direction</strong>Asphalt, Paradice, Flair, Slam @ School</div>
+  <div data-rise><strong>Production et booking</strong>LakeLive, Live Ch-onzerte</div>
+  <div data-rise><strong>Codirection</strong>LabCity, laboratoire pour la ville de demain</div>
+ </div>
+</section>
+
+<div id="projets"></div>
+
+<article class="chap" aria-labelledby="p-asphalt">
+ <div class="frame" data-cursor="Asphalt"><img src="asphalt-scene.webp" alt="La scène et le public d'Asphalt sur l'Esplanade, en fin de journée" decoding="async"></div>
+ <h2 class="big" id="p-asphalt"><span>Asphalt</span></h2>
+ <div class="meta wrap">
+  <div class="role" data-rise><b>Conception, booking, direction</b><span>Esplanade, Bienne</span><span>Open air musical en ville</span></div>
+  <p data-rise>Un festival au milieu du béton. Le temps de l'open air, la grande esplanade entre le Palais des Congrès et la Coupole devient une salle de concert à ciel ouvert, avec une scène, des bars et des bancs au milieu de la ville.</p>
+ </div>
+</article>
+
+<article class="chap r" aria-labelledby="p-paradice">
+ <div class="frame" data-cursor="Paradice"><img src="paradice.webp" alt="La patinoire Paradice en plein air sur l'Esplanade, avec son chalet" decoding="async"></div>
+ <h2 class="big" id="p-paradice"><span>Paradice</span></h2>
+ <div class="meta wrap">
+  <div class="role" data-rise><b>Conception et direction</b><span>Esplanade, Bienne</span><span>Patinoire en plein air, chaque hiver</span></div>
+  <p data-rise>La même place, six mois plus tard. Paradice transforme l'Esplanade en patinoire avec chalet, curling sur glace pour les groupes, disco sur glace et soirée du Nouvel An. Elle est portée par une équipe de cinq personnes autour de Raphael Benz et Sascha D'Antonio. Saison 2026/27 du 20 novembre au 31 janvier.<span class="tag2">paradice-bienne.ch</span></p>
+ </div>
+</article>
+
+<div class="night" id="night">
+<div class="gap"></div>
+<article class="chap" aria-labelledby="p-flair">
+ <div class="frame" data-cursor="Flair"><img src="flair.webp" alt="Flair : sculpture éclairée et projection du Chat de la sagesse sur le château de Nidau" decoding="async"></div>
+ <h2 class="big" id="p-flair"><span>Flair</span></h2>
+ <div class="meta wrap">
+  <div class="role" data-rise><b>Conception et direction</b><span>Nidau et Bienne</span><span>Exposition publique d'art lumineux et numérique</span></div>
+  <p data-rise>Dix nuits de mars 2021, un parcours d'environ 100 000 m² du Schlosspark de Nidau au Strandbad de Bienne, autour de l'ancien site de l'Expo.02. Installations lumineuses, sculptures interactives, projections sur le château et une sélection d'art vidéo. Une exposition qu'on visite à pied, à la tombée de la nuit.</p>
+ </div>
+</article>
+
+<article class="chap r" aria-labelledby="p-lake">
+ <div class="frame" data-cursor="LakeLive"><img src="lakelive.webp" alt="La grande scène de LakeLive devant une foule, au bord du lac de Bienne" decoding="async"></div>
+ <h2 class="big" id="p-lake"><span>LakeLive</span></h2>
+ <div class="meta wrap">
+  <div class="role" data-rise><b>Production et booking</b><span>Nidau et Bienne</span><span>Festival open air, musique et sport</span></div>
+  <p data-rise>Le festival d'été au bord du lac : concerts sur la grande scène, sport, ateliers et marché de nuit, sur plusieurs jours. Côté production et booking, il faut faire tenir ensemble une programmation, une logistique de festival et un site au bord de l'eau.</p>
+ </div>
+</article>
+
+<article class="chap" aria-labelledby="p-ch">
+ <div class="frame" data-cursor="Live Ch-onzerte"><img src="concert.webp" alt="Ambiance de concert intimiste, un musicien en contre-jour" decoding="async"></div>
+ <h2 class="big" id="p-ch"><span>Live Ch-onzerte</span></h2>
+ <div class="meta wrap">
+  <div class="role" data-rise><b>Organisation, avec Lucien Odermatt</b><span>Bienne</span><span>Série de concerts</span></div>
+  <p data-rise>Une série de concerts qui fait venir des artistes suisses à Bienne. Lancée par deux Biennois, elle a trouvé son public dès les premières dates.<span class="tag2">Image d'ambiance, à remplacer par une photo de la série</span></p>
+ </div>
+</article>
+
+<section class="duo wrap" aria-label="Autres projets">
+ <article data-rise>
+  <h3>Slam @ School</h3>
+  <div class="role">Conception et direction, écoles de toute la Suisse</div>
+  <p>Des ateliers de poetry slam dans les écoles primaires et les gymnases : écrire, oser monter sur scène, dire son texte devant la classe.</p>
+ </article>
+ <article data-rise>
+  <h3>LabCity</h3>
+  <div class="role">Codirection du projet, Bienne</div>
+  <p>Un laboratoire pour la ville de demain : concepts urbains, idées de smart city et événements testés directement dans l'espace public.</p>
+ </article>
+</section>
+
+<section class="films" id="films" aria-labelledby="t-films">
+ <h2 id="t-films" class="wrap" data-rise>Les films</h2>
+ <div class="track" data-cursor="Glisser">
+  <div class="film"><div class="scr"><i></i></div><h3>Pavillon Jakob, la visite</h3><p>Film Klap Studio, en cours d'intégration</p></div>
+  <div class="film"><div class="scr"><i></i></div><h3>Jakob, la soirée d'exposition</h3><p>Film Klap Studio, en cours d'intégration</p></div>
+  <div class="film"><div class="scr"><i></i></div><h3>Jakob, le vin chaud</h3><p>Film Klap Studio, en cours d'intégration</p></div>
+  <div class="film"><div class="scr"><i></i></div><h3>Asphalt, l'été sur l'Esplanade</h3><p>Emplacement pour un aftermovie</p></div>
+ </div>
+</section>
+</div>
+
+<section class="refs" aria-labelledby="t-refs">
+ <h2 id="t-refs" class="wrap" data-rise>Ils ont travaillé avec lui</h2>
+ <ul class="sr"><li>Ville de Bienne</li><li>Palais des Congrès, 50 ans</li><li>AJZ Biel, festival des 50 ans</li><li>Direction de l'instruction publique et de la culture du canton de Berne</li><li>Beisheim Stiftung</li><li>Biel für alle / Bienne pour tous</li><li>Bienne bouge</li><li>Eventra</li><li>Gebel Gebel</li><li>Kulturverein Spoken Word Biel</li><li>Orpundart Festival</li><li>Royal Arena Festival</li><li>Stiftung Vinetum</li><li>Videokunst.ch</li><li>Virus Ideenlabor</li></ul>
+ <div class="marquee" aria-hidden="true" id="mq1"></div>
+ <div class="marquee rev" aria-hidden="true" id="mq2"></div>
+</section>
+
+<section class="eng wrap" aria-labelledby="t-eng">
+ <h2 id="t-eng" data-rise>Pour la ville</h2>
+ <p data-rise>Raphael Benz est aussi conseiller de ville à <span class="bi"><span class="fr">Bienne</span><span class="de" aria-hidden="true">Biel</span></span>, élu en 2024 sur la liste Zukunft Biel / Avenir Bienne, et vice-président de X-Project. Le même terrain que ses projets : la ville et ses espaces publics.</p>
+</section>
+
+<section class="contact" id="contact" aria-labelledby="t-contact">
+ <div class="ph"><img src="bluehour.webp" alt="" loading="lazy"></div>
+ <div class="in wrap">
+  <h2 id="t-contact" data-words>Un lieu à faire vivre&nbsp;?</h2>
+  <a class="mail" href="mailto:raphael@messer-benz.ch" data-mag data-cursor="Écrire">raphael@messer-benz.ch</a>
+ </div>
+</section>
+</main>
+
+<footer class="wrap">
+ <span>Raphael Benz, <span class="bi"><span class="fr">Bienne</span><span class="de" aria-hidden="true">Biel</span></span></span>
+ <span>Site réalisé par <a href="https://klap-studio.ch">Klap Studio</a></span>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.min.js"></script>
+<script>
+{
+// références en double bande (le contenu lisible reste dans la liste cachée)
+const refs=[...document.querySelectorAll('.refs .sr li')].map(l=>l.textContent);
+const half=Math.ceil(refs.length/2);
+[['mq1',refs.slice(0,half)],['mq2',refs.slice(half)]].forEach(([id,list])=>{
+ const ul='<ul>'+list.map(t=>'<li></li>').join('')+'</ul>';
+ const el=document.getElementById(id);el.innerHTML=ul+ul;
+ el.querySelectorAll('li').forEach((li,i)=>li.textContent=list[i%list.length]);
+});
+
+if(window.gsap&&window.ScrollTrigger){
+ gsap.registerPlugin(ScrollTrigger);
+ const mm=gsap.matchMedia();
+
+ // découpage du nom lettre par lettre, et des titres mot par mot
+ document.querySelectorAll('.hero h1 .row').forEach(r=>{const t=r.textContent;r.textContent='';[...t].forEach(c=>{const s=document.createElement('span');s.className='ch';s.textContent=c;r.appendChild(s)})});
+ document.querySelectorAll('[data-words]').forEach(h=>{const t=h.textContent.trim();h.setAttribute('aria-label',t);h.textContent='';t.split(' ').forEach((w,i,a)=>{const o=document.createElement('span');o.className='w';o.setAttribute('aria-hidden','true');const s=document.createElement('span');s.textContent=w;o.appendChild(s);h.appendChild(o);if(i<a.length-1)h.appendChild(document.createTextNode(' '))})});
+
+ mm.add({full:'(prefers-reduced-motion: no-preference)',wide:'(min-width: 861px)',fine:'(hover: hover) and (pointer: fine)'},ctx=>{
+  const {full,wide,fine}=ctx.conditions;
+  if(!full){gsap.set('.hero .lede',{opacity:1});return}
+  document.documentElement.classList.add('motion');
+
+  // défilement doux
+  const lenis=new Lenis({lerp:.09,smoothWheel:true});
+  lenis.on('scroll',ScrollTrigger.update);
+  const raf=t=>lenis.raf(t*1000);gsap.ticker.add(raf);gsap.ticker.lagSmoothing(0);
+  document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();lenis.scrollTo(t,{offset:-10,duration:1.4})}}));
+
+  // 1. arrivée : le nom monte lettre par lettre
+  gsap.from('.hero h1 .ch',{yPercent:110,rotate:6,duration:1.2,ease:'expo.out',stagger:.035,delay:.15});
+  gsap.from('.hero .tag,.hero .scroll',{y:20,opacity:0,duration:1,ease:'power3.out',delay:.9});
+
+  // 2. signature : le cercle s'ouvre sur Bienne, le nom se sépare
+  const hero=gsap.timeline({scrollTrigger:{trigger:'.hero',start:'top top',end:'+=140%',scrub:1,pin:true,anticipatePin:1}});
+  hero.to('.hero .disc',{clipPath:'circle(85% at 50% 52%)',ease:'power2.inOut'},0)
+      .to('.hero .disc img',{scale:1,ease:'power2.inOut'},0)
+      .to('.hero h1 .row:first-child',{xPercent:-38,ease:'power2.in'},0)
+      .to('.hero h1 .row:last-child',{xPercent:38,ease:'power2.in'},0)
+      .to('.hero .tag,.hero .scroll',{opacity:0,duration:.2},0)
+      .to('.hero h1',{opacity:0,duration:.25},.55)
+      .to('.hero .lede',{opacity:1,y:0,duration:.3},.62)
+      .fromTo('.hero .lede',{y:30},{y:0,duration:.3},.62);
+
+  // 3. titres mot par mot
+  document.querySelectorAll('[data-words]').forEach(h=>gsap.from(h.querySelectorAll('.w span'),{yPercent:105,duration:1,ease:'expo.out',stagger:.04,scrollTrigger:{trigger:h,start:'top 82%',once:true}}));
+
+  // 4. révélations douces, une seule fois
+  ScrollTrigger.batch('[data-rise]',{start:'top 88%',once:true,onEnter:els=>gsap.from(els,{y:40,opacity:0,duration:1,ease:'power3.out',stagger:.08,overwrite:true})});
+  gsap.from('.facts div',{'--line':0,duration:1.2,ease:'expo.out',stagger:.1,scrollTrigger:{trigger:'.facts',start:'top 85%',once:true}});
+
+  // 5. chaque lieu s'allume : masque qui s'ouvre, photo en parallaxe, nom qui traverse
+  document.querySelectorAll('.chap').forEach(ch=>{
+   const frame=ch.querySelector('.frame'),img=frame.querySelector('img'),big=ch.querySelector('.big span'),rev=ch.classList.contains('r');
+   gsap.fromTo(frame,{clipPath:'inset(14% 10% 14% 10% round 28px)'},{clipPath:'inset(0% 0% 0% 0% round 22px)',ease:'none',scrollTrigger:{trigger:frame,start:'top 95%',end:'top 25%',scrub:true}});
+   gsap.fromTo(img,{yPercent:-9,scale:1.18},{yPercent:9,scale:1,ease:'none',scrollTrigger:{trigger:frame,start:'top bottom',end:'bottom top',scrub:true}});
+   gsap.fromTo(big,{x:()=>rev?-innerWidth*.12:innerWidth*.18},{x:()=>rev?innerWidth*.18:-innerWidth*.12,ease:'none',scrollTrigger:{trigger:ch,start:'top bottom',end:'bottom top',scrub:true,invalidateOnRefresh:true}});
+  });
+
+  // 6. la ville passe à la nuit
+
+  // 7. films : la section s'épingle et défile à l'horizontale
+  if(wide){
+   const track=document.querySelector('.track');
+   gsap.to(track,{x:()=>-(track.scrollWidth-innerWidth),ease:'none',scrollTrigger:{trigger:'.films',start:'top top',end:()=>'+='+(track.scrollWidth-innerWidth),pin:true,scrub:1,invalidateOnRefresh:true,anticipatePin:1}});
+  }
+
+  // la nuit tombe sur Flair et dure jusqu'aux films (créé après l'épinglage pour en tenir compte)
+  ScrollTrigger.create({trigger:'#night',start:'top 55%',end:'bottom 45%',onToggle:self=>document.body.classList.toggle('dark',self.isActive)});
+
+  // 8. contact : image en parallaxe
+  gsap.fromTo('.contact .ph',{yPercent:-6},{yPercent:6,ease:'none',scrollTrigger:{trigger:'.contact',start:'top bottom',end:'bottom bottom',scrub:true}});
+
+  // progression
+  gsap.to('.progress',{scaleX:1,ease:'none',scrollTrigger:{start:0,end:'max',scrub:.3}});
+
+  // 9. curseur et liens magnétiques, sur souris seulement
+  if(fine){
+   document.documentElement.classList.add('has-cursor');
+   const cur=document.querySelector('.cursor'),lab=cur.querySelector('span');
+   const xTo=gsap.quickTo(cur,'x',{duration:.35,ease:'power3'}),yTo=gsap.quickTo(cur,'y',{duration:.35,ease:'power3'});
+   const move=e=>{xTo(e.clientX);yTo(e.clientY)};addEventListener('pointermove',move);
+   document.querySelectorAll('[data-cursor]').forEach(el=>{
+    el.addEventListener('pointerenter',()=>{lab.textContent=el.dataset.cursor;cur.classList.add('big')});
+    el.addEventListener('pointerleave',()=>cur.classList.remove('big'));
+   });
+   document.querySelectorAll('[data-mag]').forEach(el=>{
+    const mx=gsap.quickTo(el,'x',{duration:.5,ease:'elastic.out(1,.5)'}),my=gsap.quickTo(el,'y',{duration:.5,ease:'elastic.out(1,.5)'});
+    el.addEventListener('pointermove',e=>{const b=el.getBoundingClientRect();mx((e.clientX-b.left-b.width/2)*.3);my((e.clientY-b.top-b.height/2)*.4)});
+    el.addEventListener('pointerleave',()=>{mx(0);my(0)});
+   });
+   return()=>{removeEventListener('pointermove',move);document.documentElement.classList.remove('has-cursor');gsap.ticker.remove(raf);lenis.destroy()};
+  }
+  return()=>{gsap.ticker.remove(raf);lenis.destroy()};
+ });
+ addEventListener('load',()=>ScrollTrigger.refresh());
+}else{document.querySelector('.hero .lede').style.opacity=1}
+}
+</script>
+</body>
+</html>
